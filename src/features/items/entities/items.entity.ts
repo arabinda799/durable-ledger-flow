@@ -4,8 +4,10 @@ import {
     Column,
     Check,
     Index,
+    OneToMany,
 } from 'typeorm';
-import { BigintTransformer } from '../../wallets/entities/wallet.entity';
+import { BigintTransformer } from '../../wallet/entities/wallet.entity';
+import { Inventory } from '../../wallet/entities/inventories.entity';
 
 @Entity('items')
 @Check('chk_item_price_positive', 'price > 0')
@@ -28,4 +30,7 @@ export class Item {
 
     @Column({ name: 'is_active', default: true })
     isActive: boolean;
+
+    @OneToMany(() => Inventory, (inventory) => inventory.item)
+    inventories: Inventory[];
 }

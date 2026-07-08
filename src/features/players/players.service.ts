@@ -15,28 +15,32 @@ export class PlayersService {
 
 
     async playerInitOrFind(dto: PlayerInitDto): Promise<ApiResponse<any>> {
-        const { playerUid } = dto;
+        const { playerUid, name } = dto;
 
-        const existing = await this.playerRepo.findOne({ where: { playerUid }, select: { playerUid: true } });
+        const existing = await this.playerRepo.findOne({ where: { playerUid } });
         if (existing) {
+            if (name && existing.name !== name) {
+                existing.name = name;
+                await this.playerRepo.save(existing);
+            }
             return {
                 message: 'Success',
-                data: { playerUid: existing.playerUid },
+                data: { id: existing.id, playerUid: existing.playerUid, name: existing.name },
             };
         }
         try {
-            const player = this.playerRepo.create({ playerUid });
+            const player = this.playerRepo.create({ playerUid, name });
             const savedPlayer = await this.playerRepo.save(player);
             return {
                 message: 'Success',
-                data: { playerUid: savedPlayer.playerUid },
+                data: { id: savedPlayer.id, playerUid: savedPlayer.playerUid, name: savedPlayer.name },
             };
         } catch (error: any) {
             if (error.code === '23505') {
-                const parallelPlayer = await this.playerRepo.findOne({ where: { playerUid }, select: { playerUid: true } });
+                const paralle = await this.playerRepo.findOne({ where: { playerUid } });
                 return {
                     message: 'Success',
-                    data: { playerUid: parallelPlayer?.playerUid },
+                    data: { id: paralle?.id, playerUid: paralle?.playerUid, name: paralle?.name },
                 };
             }
             throw error;

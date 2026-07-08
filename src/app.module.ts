@@ -5,10 +5,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { Player } from './features/players/entities/players.entity';
+import { Item } from './features/items/entities/items.entity';
+import { Wallet } from './features/wallet/entities/wallet.entity';
+import { WalletTransaction } from './features/wallet/entities/transactions.entity';
+import { Inventory } from './features/wallet/entities/inventories.entity';
 
 import { PlayersModule } from './features/players/players.module';
 
 import { SeedService } from './database/seed.service';
+import { ItemsModule } from './features/items/items.module';
+import { WalletModule } from './features/wallet/wallet.module';
 
 @Module({
   imports: [
@@ -25,12 +31,14 @@ import { SeedService } from './database/seed.service';
         username: configService.get<string>('DB_USERNAME', 'postgres'),
         password: configService.get<string>('DB_PASSWORD', 'postgres'),
         database: configService.get<string>('DB_DATABASE', 'game_economy'),
-        entities: [Player],
+        entities: [Player, Item, Wallet, WalletTransaction, Inventory],
         synchronize: true,
       }),
     }),
-    TypeOrmModule.forFeature([Player]),
+    TypeOrmModule.forFeature([Player, Item, Wallet, WalletTransaction, Inventory]),
     PlayersModule,
+    ItemsModule,
+    WalletModule,
   ],
   controllers: [AppController],
   providers: [
@@ -39,3 +47,4 @@ import { SeedService } from './database/seed.service';
   ],
 })
 export class AppModule { }
+

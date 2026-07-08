@@ -9,6 +9,8 @@ import { TrimInterceptor } from './common/interceptors/trim.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('v1');
+
   app.useGlobalInterceptors(
     new ApiResponseInterceptor(app.get(Reflector)),
     new TrimInterceptor(),
