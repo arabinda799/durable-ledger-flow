@@ -3,6 +3,7 @@ import { Wallet } from "../../wallet/entities/wallet.entity";
 import { WalletTransaction } from "../../wallet/entities/transactions.entity";
 import { Inventory } from "../../wallet/entities/inventories.entity";
 import { RewardClaim } from "../../rewards/entities/reward-claim.entity";
+import { RequestCollection } from "../../request-collection/entities/request-collection.entity";
 
 @Entity("players")
 @Index("idx_player_uid_unique", ["playerUid"], { unique: true })
@@ -33,4 +34,7 @@ export class Player {
 
     @OneToMany(() => RewardClaim, (claim) => claim.player)
     rewardClaims: RewardClaim[];
+
+    @OneToMany(() => RequestCollection, (request) => request.player)
+    requests: RequestCollection[];
 }
