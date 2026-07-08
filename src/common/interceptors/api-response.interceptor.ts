@@ -25,9 +25,9 @@ export class ApiResponseInterceptor<T = unknown> implements NestInterceptor {
         const resObj = isPlainObject(res) ? res : {};
         const message =
           typeof resObj.message === 'string' ? resObj.message : '';
-        const data = Object.prototype.hasOwnProperty.call(resObj, 'data')
+        const data = isPlainObject(res) && Object.prototype.hasOwnProperty.call(resObj, 'data')
           ? (resObj as { data?: unknown }).data
-          : null;
+          : res;
 
         return {
           success: true,

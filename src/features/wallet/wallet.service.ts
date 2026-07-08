@@ -9,6 +9,7 @@ import { WalletTransaction } from './entities/transactions.entity';
 import { PurchaseItemDto } from './dtos/purchase-item.dto';
 import { Item } from '../items/entities/items.entity';
 import { Inventory } from './entities/inventories.entity';
+import { RewardClaim } from '../rewards/entities/reward-claim.entity';
 
 @Injectable()
 export class WalletService {
@@ -57,12 +58,21 @@ export class WalletService {
                 relations: { item: true },
             });
             const inventoryItems = updatedInv
-                .map((i) => i.item ? { itemCode: i.item.itemCode, itemName: i.item.itemName } : null)
+                .map((i) => i.item ? i.item.itemCode : null)
+                .filter(Boolean);
+
+            const claims = await manager.find(RewardClaim, {
+                where: { playerId: playerResult.data.id },
+                relations: { reward: true },
+            });
+            const claimedRewards = claims
+                .map((c) => c.reward ? c.reward.rewardCode : null)
                 .filter(Boolean);
 
             return {
                 balance: wallet.balance,
                 inventory: inventoryItems,
+                claimedRewards,
             };
         });
 
@@ -75,9 +85,9 @@ export class WalletService {
     async purchase(playerUid: string, dto: PurchaseItemDto): Promise<ApiResponse<any>> {
         const playerResult = await this.playersService.playerInitOrFind({ playerUid });
 
-        const item = await this.itemRepo.findOne({ where: { itemCode: dto.itemCode, isActive: true } });
+        const item = await this.itemRepo.findOne({ where: { itemCode: dto.itemId, isActive: true } });
         if (!item) {
-            throw new NotFoundException(`Item ${dto.itemCode} not found`);
+            throw new NotFoundException(`Item ${dto.itemId} not found`);
         }
 
         if (item.price !== dto.price) {
@@ -126,12 +136,21 @@ export class WalletService {
                 relations: { item: true },
             });
             const inventoryItems = updatedInv
-                .map((i) => i.item ? { itemCode: i.item.itemCode, itemName: i.item.itemName } : null)
+                .map((i) => i.item ? i.item.itemCode : null)
+                .filter(Boolean);
+
+            const claims = await manager.find(RewardClaim, {
+                where: { playerId: playerResult.data.id },
+                relations: { reward: true },
+            });
+            const claimedRewards = claims
+                .map((c) => c.reward ? c.reward.rewardCode : null)
                 .filter(Boolean);
 
             return {
                 balance: wallet.balance,
                 inventory: inventoryItems,
+                claimedRewards,
             };
         });
 
@@ -159,7 +178,16 @@ export class WalletService {
         });
 
         const inventoryItems = inventory
-            .map((i) => i.item ? { itemCode: i.item.itemCode, itemName: i.item.itemName } : null)
+            .map((i) => i.item ? i.item.itemCode : null)
+            .filter(Boolean);
+
+        const claims = await this.dataSource.getRepository(RewardClaim).find({
+            where: { playerId: player.data.id },
+            relations: { reward: true },
+        });
+
+        const claimedRewards = claims
+            .map((c) => c.reward ? c.reward.rewardCode : null)
             .filter(Boolean);
 
         return {
@@ -167,6 +195,7 @@ export class WalletService {
             data: {
                 balance: wallet.balance,
                 inventory: inventoryItems,
+                claimedRewards,
             }
         };
     }

@@ -39,8 +39,10 @@ export class ItemsService {
             throw new NotFoundException(`Item with code ${itemCode} not found`);
         }
 
-        Object.assign(item, dto);
-        const updatedItem = await this.itemRepo.save(item);
+        const updatedItem = await this.itemRepo.save({
+            id: item.id,
+            ...dto,
+        });
 
         return {
             message: 'Item updated successfully',

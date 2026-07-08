@@ -4,7 +4,7 @@ import { CreditWalletDto } from './dtos/credit-wallet.dto';
 import { PurchaseItemDto } from './dtos/purchase-item.dto';
 import { ApiResponse } from 'src/common/interfaces/api-response.interface';
 
-@Controller('wallet')
+@Controller('wallets')
 export class WalletController {
     constructor(private readonly walletService: WalletService) {}
 

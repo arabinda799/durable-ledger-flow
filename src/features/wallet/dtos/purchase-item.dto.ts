@@ -4,7 +4,7 @@ export class PurchaseItemDto {
     @IsString()
     @IsNotEmpty()
     @MaxLength(100)
-    itemCode: string;
+    itemId: string;
 
     @IsInt()
     @Min(1)
