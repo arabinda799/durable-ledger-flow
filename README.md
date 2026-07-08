@@ -4,8 +4,6 @@ A robust, crash-durable, and exactly-once game wallet backend built using Nest.j
 
 ---
 
-
-
 ## Testing
 
 ### Run Automated Tests
