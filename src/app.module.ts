@@ -21,6 +21,7 @@ import { WalletModule } from './features/wallet/wallet.module';
 import { RewardsModule } from './features/rewards/rewards.module';
 import { RequestCollectionModule } from './features/request-collection/request-collection.module';
 import { RequestDeduplicationInterceptor } from './common/interceptors/request-deduplication.interceptor';
+import { ApiResponseInterceptor } from './common/interceptors/api-response.interceptor';
 
 @Module({
   imports: [
@@ -55,6 +56,10 @@ import { RequestDeduplicationInterceptor } from './common/interceptors/request-d
     {
       provide: APP_INTERCEPTOR,
       useClass: RequestDeduplicationInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ApiResponseInterceptor,
     },
   ],
 })

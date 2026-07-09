@@ -1,0 +1,295 @@
+{
+	"info": {
+		"_postman_id": "4e73b2c1-d41a-4712-ba29-37ea92cf282d",
+		"name": "Game Economy API Collection",
+		"description": "Collection of all endpoints for the Durable Game Economy Service, including wallets, items, rewards, and player management.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Players",
+			"item": [
+				{
+					"name": "Create Player",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "player-create-{{$randomUUID}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerUid\": \"player_postman_123\",\n    \"name\": \"Jane Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/players",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"players"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wallets",
+			"item": [
+				{
+					"name": "Credit Wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "credit-{{$randomUUID}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 100,\n    \"reason\": \"Postman simulated credit\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/wallets/player123/credit",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"wallets",
+								"player123",
+								"credit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Purchase Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "purchase-{{$randomUUID}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemId\": \"sword\",\n    \"price\": 100\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/wallets/player123/purchase",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"wallets",
+								"player123",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Wallet State",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/wallets/player123",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"wallets",
+								"player123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rewards",
+			"item": [
+				{
+					"name": "Create Reward",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "reward-create-{{$randomUUID}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rewardCode\": \"postman_gift\",\n    \"rewardName\": \"Postman Gift Reward\",\n    \"rewardType\": \"coins\",\n    \"rewardAmount\": 200\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/rewards",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"rewards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Claim Reward",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "claim-{{$randomUUID}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": \"player123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/rewards/daily_coins/claim",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"rewards",
+								"daily_coins",
+								"claim"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Active Rewards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/rewards",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"rewards"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "Create Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "item-create-{{$randomUUID}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemCode\": \"shield\",\n    \"itemName\": \"Shield\",\n    \"price\": 250\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Active Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"items"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		}
+	]
+}
